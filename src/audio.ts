@@ -8,7 +8,7 @@ export class AudioInitializer {
   updateSource(src: string) {
     this.audioPlayer.currentTime = 0;
     this.audioPlayer.load();
-    this.audioPlayer.src = src;
+    (this.audioPlayer.children[0] as HTMLSourceElement).src = src;
   }
 
   private initAudioElement() {
@@ -22,6 +22,7 @@ export class AudioInitializer {
     audio.controls = true;
     const sourceElement = document.createElement("source");
     const textElement = document.createTextNode("Your browser does not support the audio element.");
+    sourceElement.type = "audio/mpeg";
     audio.appendChild(sourceElement);
     audio.appendChild(textElement);
     this.audioPlayer = audio;
