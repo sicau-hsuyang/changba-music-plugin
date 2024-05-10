@@ -99,6 +99,8 @@ Vue.use(ChangaMusicPlugin);
 <script>
 export default {
   name: "RecommendDialog",
+  // 注意，出于新能考虑只有这样组件才会被通知到变更
+  shouldListenPlayerChange: true,
   props: {
     songs: {
       type: Array,

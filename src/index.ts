@@ -13,6 +13,10 @@ export default {
         };
       },
       mounted() {
+        // @ts-ignore
+        if (!this.$options.shouldListenPlayerChange) {
+          return;
+        }
         player.on("state-change", (state) => {
           // @ts-ignore
           this.playState = state === "playing";
