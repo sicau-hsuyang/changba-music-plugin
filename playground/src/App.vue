@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    {{ detail }}
     <button @click="play1">播放音乐1</button>
     <button @click="play2">播放音乐2</button>
   </div>
@@ -9,6 +10,11 @@
 import { player } from "../../dist";
 export default {
   name: "App",
+  computed: {
+    detail() {
+      return player.state;
+    },
+  },
   methods: {
     play1() {
       player.switchMusic({

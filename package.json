@@ -1,0 +1,22 @@
+{
+  "name": "changba-music-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sicau-hsuyang/changba-music-plugin.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sicau-hsuyang/changba-music-plugin/issues"
+  },
+  "homepage": "https://github.com/sicau-hsuyang/changba-music-plugin#readme",
+  "dependencies": {
+    "vue": "2.7.2"
+  }
+}
