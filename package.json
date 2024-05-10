@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/sicau-hsuyang/changba-music-plugin#readme",
   "dependencies": {
+    "events": "^3.3.0",
     "vue": "2.7.2"
+  },
+  "devDependencies": {
+    "@types/events": "^3.0.3"
   }
 }

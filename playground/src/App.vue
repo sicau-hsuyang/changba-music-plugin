@@ -1,19 +1,31 @@
 <template>
   <div id="app">
     {{ detail }}
+    <hr />
     <button @click="play1">播放音乐1</button>
     <button @click="play2">播放音乐2</button>
+    <button @click="init">初始化音乐播放器</button>
   </div>
 </template>
 
 <script>
 import { player } from "../../dist";
+player.on("state-change", (state) => {
+  console.log(state);
+});
+
 export default {
   name: "App",
-  computed: {
-    detail() {
-      return player.state;
-    },
+  data() {
+    return {
+      detail: null,
+    };
+  },
+  mounted() {
+    player.on("music-change", (info) => {
+      console.log(info);
+      this.detail = info;
+    });
   },
   methods: {
     play1() {
@@ -27,6 +39,9 @@ export default {
         workId: "2",
         workPath: "https://qiniubanzou.sslmp3img.changba.com/mp3/user/60c5eb0330401d7ded24f22dea9195eb.mp3",
       });
+    },
+    init() {
+      player.initAudio();
     },
   },
 };

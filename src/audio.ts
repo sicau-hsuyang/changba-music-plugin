@@ -12,13 +12,19 @@ export class AudioInitializer {
   }
 
   private initAudioElement() {
+    const id = "changba-singleton-audio-player";
+    if (document.querySelector("#" + id)) {
+      return;
+    }
     const audio = document.createElement("audio");
-    audio.style.display = "none";
+    audio.id = id;
+    // audio.style.display = "none";
     audio.controls = true;
     const sourceElement = document.createElement("source");
     const textElement = document.createTextNode("Your browser does not support the audio element.");
     audio.appendChild(sourceElement);
     audio.appendChild(textElement);
     this.audioPlayer = audio;
+    document.body.appendChild(audio);
   }
 }
