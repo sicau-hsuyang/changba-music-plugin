@@ -57,3 +57,71 @@ player.initAudio();
  */
 player.resetAudio();
 ```
+
+## 与 Vue 集成
+
+首先注册插件
+
+```js
+import Vue from "vue";
+import ChangaMusicPlugin from "@changba/music-plugin";
+
+Vue.use(ChangaMusicPlugin);
+```
+
+在组件中使用
+
+```vue
+<template>
+  <CbModal @close="closeRcd">
+    <div class="rcd">
+      <div class="rcd-container">
+        <div class="rcd-item" v-for="(row, rIdx) in songs" :key="rIdx">
+          <div class="rcd-item__cover">
+            <span
+              class="rcd-item__cover-icon"
+              :class="ctxMusic.id === row.id && playState ? 'icon-pause' : 'icon-play'"
+              @click="setCurrentAudio(row)"
+            ></span>
+            <img :src="row.icon" alt="" />
+          </div>
+          <div class="rcd-item__content">
+            <p class="rcd-item__content-title">《{{ row.name }}》</p>
+            <p class="rcd-item__content-desc">{{ row.artist }}</p>
+          </div>
+          <button class="rcd-item__btn" @click="playSong(row)"></button>
+        </div>
+      </div>
+    </div>
+  </CbModal>
+</template>
+
+<script>
+export default {
+  name: "RecommendDialog",
+  props: {
+    songs: {
+      type: Array,
+      required: true,
+      default: () => [],
+    },
+  },
+  methods: {
+    setCurrentAudio(song) {
+      this.$player.switchMusic({
+        workId: song.id,
+        workPath: song.originalMp3,
+      });
+    },
+    closeRcd() {
+      // 停止正在播放的音乐
+      this.$player.initAudio();
+    },
+    playSong(song) {
+      // 停止正在播放的音乐
+      this.$player.initAudio();
+    },
+  },
+};
+</script>
+```

@@ -1,6 +1,6 @@
 {
   "name": "@changba/music-plugin",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "this is a music player integration into changba app",
   "main": "dist/index.js",
   "scripts": {
@@ -17,10 +17,20 @@
     "url": "https://github.com/sicau-hsuyang/changba-music-plugin/issues"
   },
   "homepage": "https://github.com/sicau-hsuyang/changba-music-plugin#readme",
+  "peerDependencies": {
+    "vue": "2.6.14"
+  },
   "dependencies": {
     "events": "^3.3.0"
   },
   "devDependencies": {
-    "@types/events": "^3.0.3"
-  }
+    "@types/events": "^3.0.3",
+    "vue": "2.6.14"
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "global.d.ts"
+  ]
 }

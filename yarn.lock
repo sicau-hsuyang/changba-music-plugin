@@ -11,3 +11,8 @@ events@^3.3.0:
   version "3.3.0"
   resolved "http://npm.fe.changbaops.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha1-Mala0Kkk4tLEGagTrrLE6HjqdAA=
+
+vue@2.6.14:
+  version "2.6.14"
+  resolved "http://npm.fe.changbaops.com/vue/-/vue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
+  integrity sha1-5RqlJQJQ1Wmj+606ilpofWA24jU=
