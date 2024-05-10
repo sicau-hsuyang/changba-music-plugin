@@ -1,24 +1,24 @@
 {
-  "name": "changba-music-plugin",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@changba/music-plugin",
+  "version": "0.0.1",
+  "description": "this is a music player integration into changba app",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sicau-hsuyang/changba-music-plugin.git"
   },
-  "author": "",
+  "author": "JohnYang",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sicau-hsuyang/changba-music-plugin/issues"
   },
   "homepage": "https://github.com/sicau-hsuyang/changba-music-plugin#readme",
   "dependencies": {
-    "events": "^3.3.0",
-    "vue": "2.7.2"
+    "events": "^3.3.0"
   },
   "devDependencies": {
     "@types/events": "^3.0.3"
