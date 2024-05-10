@@ -17,7 +17,7 @@ class ChangbaMusicPlayer extends EventEmitter {
 
   private player: HTMLAudioElement;
 
-  state = {
+  private state = {
     playState: PlayState.STOP,
     musicInfo: Object.seal({
       id: "",
@@ -29,7 +29,7 @@ class ChangbaMusicPlayer extends EventEmitter {
     return this.state.playState === PlayState.PLAYING;
   }
 
-  stopPlayerEvent = false;
+  private stopPlayerEvent = false;
 
   constructor() {
     super();
@@ -41,6 +41,9 @@ class ChangbaMusicPlayer extends EventEmitter {
     });
   }
 
+  /**
+   * 对外通知音乐上下文的改变
+   */
   notifyCurrentPlaying() {
     // 对外暴露一个深克隆的数据
     const { id, src } = this.state.musicInfo;
@@ -50,6 +53,10 @@ class ChangbaMusicPlayer extends EventEmitter {
     });
   }
 
+  /**
+   * 对外通知播放状态的改变
+   * @returns
+   */
   notifyPlayerStateChange() {
     if (this.stopPlayerEvent) {
       return;
@@ -70,26 +77,30 @@ class ChangbaMusicPlayer extends EventEmitter {
       } else {
         this.playMusic();
       }
-      return;
+    } else {
+      // 否则视为切换音乐
+      this.state.musicInfo.id = info.workId;
+      this.state.musicInfo.src = info.workPath;
+      this.stopPlayerEvent = true;
+      // 更新音乐资源的地址
+      this.initializer.updateSource(info.workPath);
+      // 通知事件
+      this.notifyCurrentPlaying();
+      new Promise((resolve) => {
+        setTimeout(() => {
+          this.resetAudio();
+          this.stopPlayerEvent = false;
+          this.playMusic();
+          resolve();
+        }, 0);
+      }) as Promise<void>;
     }
-    // 否则视为切换音乐
-    this.state.musicInfo.id = info.workId;
-    this.state.musicInfo.src = info.workPath;
-    this.stopPlayerEvent = true;
-    // 更新音乐资源的地址
-    this.initializer.updateSource(info.workPath);
-    // 通知事件
-    this.notifyCurrentPlaying();
-    new Promise((resolve) => {
-      setTimeout(() => {
-        this.resetAudio();
-        this.stopPlayerEvent = false;
-        this.playMusic();
-        resolve();
-      }, 0);
-    }) as Promise<void>;
   }
 
+  /**
+   * 播放music，如果正在播放则不进行任何处理
+   * @returns
+   */
   async playMusic() {
     if (!this.player) {
       return;
@@ -104,6 +115,10 @@ class ChangbaMusicPlayer extends EventEmitter {
     this.notifyPlayerStateChange();
   }
 
+  /**
+   * 暂停音乐，如果已经暂停了，则不进行任何处理
+   * @returns
+   */
   pauseMusic() {
     // 播放器存在，资源存在，播放中
     if (!this.player || !this.state.musicInfo.src || this.player.paused) {
@@ -134,7 +149,7 @@ class ChangbaMusicPlayer extends EventEmitter {
   }
 
   /**
-   * 重置音乐播放器，主要是将正在播放的歌曲的进度切换到0
+   * 重置音乐播放器，主要是将正在播放的歌曲的进度切换到0，不会导致音乐上下文的改变
    * @returns
    */
   resetAudio() {
@@ -148,7 +163,7 @@ class ChangbaMusicPlayer extends EventEmitter {
   }
 
   /**
-   * 注册事件，当页面关闭之前自动关闭页面上正在播放的音乐
+   * 注册事件，当页面关闭之前自动关闭页面上正在播放的音乐，这个事件是客户端加的，主要是为了防止二重奏
    */
   registerEvent() {
     window.beforeDestroy = () => {
