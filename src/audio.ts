@@ -18,7 +18,7 @@ export class AudioInitializer {
     }
     const audio = document.createElement("audio");
     audio.id = id;
-    // audio.style.display = "none";
+    audio.style.display = "none";
     audio.controls = true;
     const sourceElement = document.createElement("source");
     const textElement = document.createTextNode("Your browser does not support the audio element.");
