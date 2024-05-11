@@ -1,14 +1,48 @@
+type Fn = (...args: unknown[]) => unknown;
+
 export class AudioInitializer {
   audioPlayer!: HTMLAudioElement;
+
+  queue: Fn[] = [];
 
   constructor() {
     this.initAudioElement();
   }
 
-  updateSource(src: string) {
-    this.audioPlayer.currentTime = 0;
+  private _onSeek = (ev: Event) => {
+    while (this.queue.length) {
+      const fn = this.queue.shift()!;
+      fn(ev);
+    }
+  };
+
+  private seek() {
+    if (!this.audioPlayer) {
+      return;
+    }
+    // 删除之前注册的
+    this.audioPlayer.removeEventListener("canplaythrough", this._onSeek);
+    // 重新注册
+    this.audioPlayer.addEventListener("canplaythrough", this._onSeek);
+    return new Promise((resolve, reject) => {
+      // 将其加入到队列中，等待缓冲完成之后再触发
+      this.queue.push(resolve);
+      // 同时处理超时逻辑
+      setTimeout(() => {
+        reject("load resource timeout");
+      }, 30000);
+    });
+  }
+
+  async updateSource({ src, startTime }: { src: string; startTime?: number }) {
+    const sourceEl = this.audioPlayer.children[0] as HTMLSourceElement;
+    sourceEl.src = src;
     this.audioPlayer.load();
-    (this.audioPlayer.children[0] as HTMLSourceElement).src = src;
+    this.audioPlayer.currentTime = 0;
+    // 等待资源加载完成
+    await this.seek();
+    const t = startTime || 0;
+    this.audioPlayer.currentTime = t / 1000;
   }
 
   private initAudioElement() {
