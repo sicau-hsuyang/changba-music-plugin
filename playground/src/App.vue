@@ -30,7 +30,7 @@ export default {
   methods: {
     play1() {
       player.switchMusic({
-        loop: true,
+        // loop: true,
         startTime: 30000,
         endTime: 40000,
         workId: "1",

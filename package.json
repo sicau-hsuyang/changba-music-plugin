@@ -1,6 +1,6 @@
 {
   "name": "@changba/music-plugin",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "this is a music player integration into changba app",
   "main": "dist/index.js",
   "scripts": {

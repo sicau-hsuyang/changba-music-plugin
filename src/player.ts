@@ -239,7 +239,7 @@ class ChangbaMusicPlayer extends EventEmitter {
     const t = startTime || 0;
     this.player.currentTime = t / 1000;
     if (!loop) {
-      this.player.load();
+      this.player.pause();
       this.state.playState = PlayState.STOP;
       this.notifyPlayerStateChange();
     } else {
