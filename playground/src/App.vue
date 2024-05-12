@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    {{ detail }}
+    {{ cbMusicPlugin }}
     <hr />
     <button @click="play1">播放音乐1</button>
     <button @click="play2">播放音乐2</button>
@@ -9,27 +9,15 @@
 </template>
 
 <script>
-import { player } from "../../dist";
-player.on("state-change", (state) => {
-  console.log(state);
-});
-
 export default {
   name: "App",
+  shouldListenPlayerChange: true,
   data() {
-    return {
-      detail: null,
-    };
-  },
-  mounted() {
-    player.on("music-change", (info) => {
-      console.log(info);
-      this.detail = info;
-    });
+    return {};
   },
   methods: {
     play1() {
-      player.switchMusic({
+      this.$player.switchMusic({
         // loop: true,
         startTime: 30000,
         endTime: 40000,
@@ -38,13 +26,13 @@ export default {
       });
     },
     play2() {
-      player.switchMusic({
+      this.$player.switchMusic({
         workId: "2",
         workPath: "https://qiniubanzou.sslmp3img.changba.com/mp3/user/60c5eb0330401d7ded24f22dea9195eb.mp3",
       });
     },
     init() {
-      player.initAudio();
+      this.$player.initAudio();
     },
   },
 };

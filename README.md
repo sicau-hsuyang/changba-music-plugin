@@ -36,6 +36,12 @@ player.on("state-change", (state) => {
 player.switchMusic({
   workId: "音乐资源的唯一性标识",
   workPath: "音乐资源的资源地址",
+  // 可选，指定从某个时间开始播放，单位是MS，默认视为0
+  startTime: 1000,
+  // 可选，指定播放到某个位置就回到startTime，单位是MS
+  endTime: 2000,
+  // 可选，是否重复播放
+  loop: true
 });
 
 /**
@@ -60,6 +66,8 @@ player.resetAudio();
 
 ## 与 Vue 集成
 
+上述使用还是不太直接，需要开发者自己控制一些逻辑，因此插件提供了一个开箱即用的封装
+
 首先注册插件
 
 ```js
@@ -72,6 +80,7 @@ Vue.use(ChangaMusicPlugin);
 在组件中使用
 
 ```vue
+<!-- 插件中全局混入了一个cbMusicPlugin的对象，这个对象保存当前播放器的状态以及播放器的状态，你可以在你的组件内配置shouldListenPlayerChange选项，决定是否监听这个对象的变更 -->
 <template>
   <CbModal @close="closeRcd">
     <div class="rcd">
@@ -80,7 +89,7 @@ Vue.use(ChangaMusicPlugin);
           <div class="rcd-item__cover">
             <span
               class="rcd-item__cover-icon"
-              :class="ctxMusic.id === row.id && playState ? 'icon-pause' : 'icon-play'"
+              :class="cbMusicPlugin.current.id === row.id && cbMusicPlugin.playState ? 'icon-pause' : 'icon-play'"
               @click="setCurrentAudio(row)"
             ></span>
             <img :src="row.icon" alt="" />
@@ -99,7 +108,7 @@ Vue.use(ChangaMusicPlugin);
 <script>
 export default {
   name: "RecommendDialog",
-  // 注意，出于新能考虑只有这样组件才会被通知到变更
+  // 注意，出于性能考虑只有这样组件才会被通知到变更
   shouldListenPlayerChange: true,
   props: {
     songs: {
