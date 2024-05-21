@@ -124,6 +124,9 @@ class ChangbaMusicPlayer extends EventEmitter {
         },
         ...rest,
       };
+      // 把老的歌曲和ID记录下来，如果之前的歌曲不为空，则不需要处理currentTime
+      const oldId = this.state.musicInfo.id;
+      const oldSrc = this.state.musicInfo.src;
       Object.assign(this.state.musicInfo, {
         ...setting,
         id: workId,
@@ -141,7 +144,10 @@ class ChangbaMusicPlayer extends EventEmitter {
       this.notifyCurrentPlaying();
       new Promise((resolve) => {
         setTimeout(() => {
-          this.resetAudio();
+          // 如果当前有资源正在播放的话，才初始化进度，否则就维持正常的进度
+          if (oldId && oldSrc) {
+            this.resetAudio();
+          }
           this.stopPlayerEvent = false;
           this.playMusic();
           resolve();
@@ -237,7 +243,7 @@ class ChangbaMusicPlayer extends EventEmitter {
     }
     const { startTime, loop } = this.state.musicInfo;
     const t = startTime || 0;
-    this.player.currentTime = t / 1000;
+    this.player.currentTime =  Math.max(t / 1000, 0);
     if (!loop) {
       this.player.pause();
       this.state.playState = PlayState.STOP;

@@ -4,6 +4,7 @@
     <hr />
     <button @click="play1">播放音乐1</button>
     <button @click="play2">播放音乐2</button>
+    <button @click="play3">播放音乐3</button>
     <button @click="init">初始化音乐播放器</button>
   </div>
 </template>
@@ -18,7 +19,7 @@ export default {
   methods: {
     play1() {
       this.$player.switchMusic({
-        // loop: true,
+        loop: true,
         startTime: 30000,
         endTime: 40000,
         workId: "1",
@@ -29,6 +30,13 @@ export default {
       this.$player.switchMusic({
         workId: "2",
         workPath: "https://qiniubanzou.sslmp3img.changba.com/mp3/user/60c5eb0330401d7ded24f22dea9195eb.mp3",
+      });
+    },
+    play3() {
+      this.$player.switchMusic({
+        loop: true,
+        workId: "3",
+        workPath: "https://qiniubanzou.sslmp3img.changba.com/mp3/user/7b8643103d7cc9489b536e60357804f0.mp3",
       });
     },
     init() {
