@@ -35,14 +35,28 @@ export class AudioInitializer {
   }
 
   async updateSource({ src, startTime }: { src: string; startTime?: number }) {
-    const sourceEl = this.audioPlayer.children[0] as HTMLSourceElement;
-    sourceEl.src = src;
+    let sourceEl = this.audioPlayer.children[0] as HTMLSourceElement;
+    if (!sourceEl) {
+      this.initChild();
+      sourceEl = this.audioPlayer.children[0] as HTMLSourceElement;
+    }
+    sourceEl.src = src || '/';
     this.audioPlayer.load();
     this.audioPlayer.currentTime = 0;
     // 等待资源加载完成
     await this.seek();
     const t = startTime || 0;
     this.audioPlayer.currentTime = t / 1000;
+  }
+
+  private initChild() {
+    const doc = document.createDocumentFragment();
+    const sourceElement = document.createElement("source");
+    const textElement = document.createTextNode("Your browser does not support the audio element.");
+    sourceElement.type = "audio/mpeg";
+    doc.appendChild(sourceElement);
+    doc.appendChild(textElement);
+    this.audioPlayer.appendChild(doc);
   }
 
   private initAudioElement() {
@@ -54,11 +68,6 @@ export class AudioInitializer {
     audio.id = id;
     audio.style.display = "none";
     audio.controls = true;
-    const sourceElement = document.createElement("source");
-    const textElement = document.createTextNode("Your browser does not support the audio element.");
-    sourceElement.type = "audio/mpeg";
-    audio.appendChild(sourceElement);
-    audio.appendChild(textElement);
     this.audioPlayer = audio;
     document.body.appendChild(audio);
   }
